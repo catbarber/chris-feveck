@@ -1,0 +1,42 @@
+:root {
+  /* Spring Color Palette */
+  --spring-primary: #4CAF50;
+  --spring-secondary: #FF9800;
+  --spring-accent: #2196F3;
+  --spring-light: #FFF9C4;
+  --spring-pastel: #E1F5FE;
+  --spring-blossom: #F8BBD0;
+  --spring-white: #FFFFFF;
+  --spring-light-gray: #F5F5F5;
+  --spring-gray: #757575;
+  --spring-dark: #37474F;
+  
+  /* Background Colors */
+  --bg-primary: var(--spring-white);
+  --bg-secondary: var(--spring-light);
+  --bg-tertiary: var(--spring-pastel);
+  
+  /* Text Colors */
+  --text-primary: var(--spring-dark);
+  --text-secondary: #546E7A;
+  --text-muted: var(--spring-gray);
+  
+  /* Accent Colors */
+  --accent-primary: var(--spring-primary);
+  --accent-secondary: var(--spring-secondary);
+  --accent-gradient: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
+  
+  /* UI Colors */
+  --border-color: #E0E0E0;
+  --shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+  --shadow-hover: 0 8px 25px rgba(76, 175, 80, 0.15);
+  --success-color: #4CAF50;
+  --warning-color: #FF9800;
+  --error-color: #F44336;
+  --card-bg: var(--spring-white);
+  --card-border: 1px solid var(--border-color);
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

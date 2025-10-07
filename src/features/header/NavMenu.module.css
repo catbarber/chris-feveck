@@ -1,0 +1,37 @@
+.headerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #7180b9;
+  width: 100%;
+  height: 10vh;
+}
+.title {
+  margin-left: 10px;
+}
+.headerParagraph {
+  margin-left: 10px;
+  font-size: large;
+}
+.headerButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.headerButtonsContainer > div {
+  flex-basis: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.buttonText {
+  font-size: x-large;
+}
+#headerImage {
+  margin-top: 50px;
+  clip-path: circle(50%);  
+}
+@media only screen and (max-width: 600px) {
+}

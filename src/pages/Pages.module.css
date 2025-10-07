@@ -1,0 +1,71 @@
+.main {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/portfolio-231ae.appspot.com/o/images%2Fcfeveckbackground.png?alt=media&token=4af65f99-12fa-470f-89ef-4a2aa3b7308c");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #89ecda;
+  height: 90vh;
+  padding-left: 100px;
+}
+.mainLayout{
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+  align-content: center;
+  
+}
+.mainBoxLayout{  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 50vw;
+}
+.mainBoxLayout > div > p{
+  padding:16px;
+  background-color: #dff3e4;  
+  font-size: large;
+}
+.mainBoxLayout >div>h1{
+  font-size: 4em;
+  font-weight: lighter;  
+}
+.mainBoxLayout >div>div>h3{
+  font-size: 2em;
+  font-weight: lighter;  
+}
+
+.mainBoxLayoutUL{
+  display: flex;
+  flex-direction: row;  
+  flex:1;
+  
+}
+.mainBoxLayoutUL > div{
+  margin-left: 16px;
+  margin-right: 16px;    
+}
+.mainBoxLayoutUL > div > ul{
+  background-color: #dff3e4;  
+  padding:2px;
+  font-size: large;
+}
+hr{
+  width:100%;
+  border: solid 2px #000;
+}
+@media screen and (max-width: 600px) {
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://firebasestorage.googleapis.com/v0/b/portfolio-231ae.appspot.com/o/images%2FcfeveckbackgroundSm.png?alt=media&token=8275a04a-ea5c-483b-b371-8cfb31bfdfb4");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #89ecda;
+    height: auto;
+    padding-left: 0px;
+  }
+  
+}

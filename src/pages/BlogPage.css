@@ -1,0 +1,36 @@
+/* src/pages/BlogPage.css */
+.blog-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--spring-pastel) 0%, var(--spring-white) 100%);
+}
+
+.blog-hero {
+  background: linear-gradient(135deg, var(--spring-primary) 0%, var(--spring-accent) 100%);
+  color: var(--spring-white);
+}
+
+.blog-hero h1 {
+  background: none;
+  -webkit-text-fill-color: var(--spring-white);
+  color: var(--spring-white);
+}
+
+.blog-card {
+  background: var(--spring-white);
+  border-top: 4px solid var(--spring-primary);
+}
+
+.filter-btn.active {
+  background: var(--spring-primary);
+  color: var(--spring-white);
+}
+
+.read-more-btn {
+  border-color: var(--spring-primary);
+  color: var(--spring-primary);
+}
+
+.read-more-btn:hover {
+  background: var(--spring-primary);
+  color: var(--spring-white);
+}

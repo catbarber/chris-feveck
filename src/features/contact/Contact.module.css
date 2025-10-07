@@ -1,0 +1,68 @@
+.root {
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+.warning {
+  border-color: red;
+  color: red;
+  font-weight: lighter;
+}
+
+.contact__button {
+  border: none;
+  color: #fff;
+  padding: 15px 32px;
+  margin: 0.2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+.contact__button__close__container {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-end;
+}
+.contact__button__send {
+  background-color: #ffa69e;
+  transition: background-color 500ms;
+}
+.contact__button__send:hover {
+  background-color: #ff686b;
+}
+
+.contact__button__close {
+  background-color: #ffa69e;
+  opacity: 0.9;
+  transition: background-color 500ms, opacity 500ms;
+}
+.contact__button__close:hover {
+  background-color: #d73851;
+  opacity: 1;
+}
+.modal__root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  flex-grow: 1;
+  background-color: #292b2c;
+  padding: 2rem;
+  height: 100%;
+  width: 100%;
+  opacity: 0.7;
+}
+.contactMeForm > input {
+  font-size: large;
+}
+.contactCloseButton {
+}
+.sendContactButton {
+}
+@media only screen and (max-width: 600px) {
+}

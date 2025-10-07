@@ -1,0 +1,47 @@
+/* src/pages/AboutPage.css */
+.about-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--spring-pastel) 0%, var(--spring-white) 100%);
+}
+
+.about-hero {
+  background: linear-gradient(135deg, var(--spring-primary) 0%, var(--spring-accent) 100%);
+  color: var(--spring-white);
+}
+
+.hero-text h1 {
+  background: none;
+  -webkit-text-fill-color: var(--spring-white);
+  color: var(--spring-white);
+}
+
+.story-section,
+.skills-section,
+.experience-section,
+.values-section {
+  background: transparent;
+}
+
+.skill-category {
+  background: var(--spring-white);
+  border-left: 4px solid var(--spring-primary);
+}
+
+.skill-tag {
+  background: var(--spring-primary);
+  color: var(--spring-white);
+}
+
+.timeline-content {
+  background: var(--spring-white);
+  border-left: 4px solid var(--spring-primary);
+}
+
+.value-card {
+  background: var(--spring-white);
+  border-top: 4px solid var(--spring-primary);
+}
+
+.about-cta {
+  background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
+}

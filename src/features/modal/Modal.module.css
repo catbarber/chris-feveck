@@ -1,0 +1,84 @@
+.modal {
+  background-color: #f99192;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: transparent solid 0px;
+  margin-left: 10px;
+}
+.input {
+  width: 100%;
+  font-size: larger;
+  border-radius: 4px;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: 0.3s all;
+}
+
+.input:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.button {
+  background-color: #8ad6cc;
+  color: #fff;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.button:hover {
+  transition: background-color 500ms;
+  background-color: #66beb2;
+  outline: 0;
+}
+.paragraphContainer {
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 100%;
+}
+.modalParagraph {
+  background-color: #f97171;
+  text-align: left;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: larger;
+}
+.title {
+  text-decoration: underline;
+  font-size: xx-large;
+}
+.subtitle {
+  font-size: larger;
+}
+.modalIcon {
+  cursor: pointer;
+}
+.modalHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+}
+@media only screen and (max-width: 800px) {
+  .modal {
+    overflow-y: scroll;
+  }
+  .modalHeader {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+  }
+}

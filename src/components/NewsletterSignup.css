@@ -1,0 +1,108 @@
+/* src/components/NewsletterSignup.css */
+.newsletter-section {
+  background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
+  margin: 3rem auto;
+  padding: 3rem 2rem;
+  border-radius: 25px;
+  box-shadow: var(--shadow);
+  max-width: 800px;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-section::before {
+  content: '🌼🌸🌷';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 4rem;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.newsletter-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.newsletter-header h3 {
+  color: var(--spring-white);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.newsletter-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.newsletter-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  background: var(--spring-white);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.newsletter-input:focus {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.subscribe-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--spring-secondary);
+  color: var(--spring-white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.subscribe-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+}
+
+/* Success state */
+.newsletter-section.success {
+  background: linear-gradient(135deg, var(--spring-primary), #45a049);
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: var(--spring-white);
+  margin-bottom: 1.5rem;
+  animation: bounce 0.6s ease;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+  }
+}
