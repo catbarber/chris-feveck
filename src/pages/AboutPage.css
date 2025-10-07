@@ -26,7 +26,9 @@
   background: var(--spring-white);
   border-left: 4px solid var(--spring-primary);
 }
-
+.stat{
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 .skill-tag {
   background: var(--spring-primary);
   color: var(--spring-white);
@@ -44,4 +46,18 @@
 
 .about-cta {
   background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
+}
+
+.hero-stats{
+ color: var(--spring-white);
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.test{
+  background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
+
+}
+/* Mobile styles */
+@media (max-width: 768px) {
+  
 }

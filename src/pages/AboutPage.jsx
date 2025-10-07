@@ -51,20 +51,21 @@ function AboutPage() {
           <div className="hero-text">
             <h1>Hello, I'm Christopher</h1>
             <p className="hero-subtitle">
-              A passionate web developer and cloud enthusiast dedicated to creating
-              exceptional digital experiences that drive business growth.
+              For Christopher Feveck, the sea is more than a setting—it's a character. Born and raised in the archipelago of Trinidad and Tobago, he grew up with saltwater in his veins and stories of explorers on the trade winds. After charting a course to King's University College in Edmonton, he found that even the prairie skies couldn't compete with his longing for the ocean's horizon.
+
+              As a PADI Advanced Open Water diver, Christopher has ventured into the silent, breathtaking world beneath the waves, an experience that breathes authentic detail into the maritime adventures of his characters. This unique blend of island spirit, academic discipline, and hands-on exploration, combined with a curious mind that dabbles in programming, shapes his writing. He spins his fantasies not from pure imagination, but from the rich tapestry of his own life—every person he's met a potential crewmate, every experience a treasure map to a new story.
             </p>
             <div className="hero-stats">
               <div className="stat">
                 <div className="stat-number">5+</div>
-                <div className="stat-label">Years Experience</div>
+                <div className="stat-label">Years Web Developer/ Digital marker Experience</div>
               </div>
               <div className="stat">
-                <div className="stat-number">100+</div>
+                <div className="stat-number">8+</div>
                 <div className="stat-label">Projects Completed</div>
               </div>
               <div className="stat">
-                <div className="stat-number">50+</div>
+                <div className="stat-number">2</div>
                 <div className="stat-label">Happy Clients</div>
               </div>
             </div>

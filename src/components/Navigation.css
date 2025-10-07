@@ -76,7 +76,10 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
-
+nav > div > div > a > h1{
+  font-weight: lighter;
+  font-size: 24px !important;
+}
 /* Mobile styles */
 @media (max-width: 768px) {
   .navigation {
@@ -119,5 +122,10 @@
     padding: 1rem;
     border-radius: 8px;
     margin: 0.25rem 0;
+  }
+  nav > div > div > a > h1{
+    font-weight: lighter;
+    font-size: 24px !important;
+    padding-left: 8px;
   }
 }

@@ -1,18 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import NavMenu from "../features/header/NavMenu";
-import { selectDisplayName } from "../features/login/loginSlice";
-import styles from "./Pages.module.css";
-export default function NotFound() {
-  const displayName = useSelector(selectDisplayName);
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './NotFound.css';
+
+const NotFound = () => {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/');
+  };
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div>
-      <NavMenu title="Return to the known by pressing home" />
-      <div className={styles.container}>
-        <h1>{`Looks like you got lost in the unknown, ${
-          displayName ?? "Guest user"
-        }.`}</h1>
+    <div className="not-found">
+      <div className="not-found-content">
+        <div className="error-code">404</div>
+        <h1>Oops! Page Not Found</h1>
+        <p className="error-message">
+          Sorry, the page you're looking for doesn't exist. 
+          It might have been moved or deleted.
+        </p>
+        <div className="action-buttons">
+          <button className="btn btn-primary" onClick={handleGoBack}>
+            Go Back
+          </button>
+          <button className="btn btn-secondary" onClick={handleGoHome}>
+            Go Home
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;

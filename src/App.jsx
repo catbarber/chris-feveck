@@ -6,6 +6,7 @@ import BlogPage from './pages/BlogPage'
 import AboutPage from './pages/AboutPage'
 import DonationPage from './pages/DonationPage'
 import './App.css'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/donate" element={<DonationPage />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

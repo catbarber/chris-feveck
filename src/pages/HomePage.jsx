@@ -1,61 +1,96 @@
 import React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import NewsletterSignup from '../components/NewsletterSignup';
 // Add this import at the top of HomePage.jsx
 import './HomePage.css';
 // Christopher Feveck's Author Homepage Component
 const HomePage = () => {
+
+   const isMobile = useMediaQuery('(max-width: 767px)');
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  
   return (
-    <div className="author-homepage">
+    <div className="home-page">
+       <h3 className='tagline'>Author of Swashbuckling{isMobile?<br/>:" "}Pirate Fantasy Novels</h3>
+      
       {/* Hero Section */}
       <header className="hero-section">
-        <h3 className="tagline" style={{ padding: '0 20px', }}>Author of Swashbuckling Pirate Fantasy</h3>
-        <div style={{ padding: '0 20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}> <a href="https://voyagesofvictora.web.app/" target='_blank'>Explore The Voyages of Victora</a>
-
-          <a>Sign Up for a Free Short Story</a>
-        </div>     </header>
-      <br />
-      <br />
+         <div className='external-links-menu-top'> 
+          <a href="https://voyagesofvictora.web.app/" target='_blank'>Explore The Voyages of Victora</a>
+          
+          <a href='#signup'>Sign Up for a Free Short Story</a>
+        </div>     
+      </header>
+      
       {/* Main Bio Section */}
-      <div style={{ padding: '0 20px' }}>
-        <main className="bio-section">
-          <div className="bio-content">
-            <h2>Welcome Aboard</h2><hr />
-            <div className="bio-flex-container" style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-              <div className="bio-text" style={{ flex: 2 }}>
-                Christopher Feveck was raised on the twin islands of Trinidad and Tobago, where the rhythm of the ocean and a rich history of seafaring first ignited his passion for adventure. Though his academic journey took him inland to King's University College in Edmonton, the call of the sea never faded. He is a certified PADI Advanced Open Water diver, and his time beneath the waves directly fuels the immersive, aquatic worlds of his pirate fantasy series, The Voyages of Victora.
-
-              </div>
-
+      <div className='home-container'>
+        <main>
+          <div>
+            <h1 className="bio-heading">Welcome Aboard</h1>
+            <hr />
+            <div className="bio-flex-container">
+                <div className="bio-text">Christopher Feveck was raised on the twin islands of Trinidad and Tobago, where the rhythm of the ocean and a rich history of seafaring first ignited his passion for adventure. Though his academic journey took him inland to King's University College in Edmonton, the call of the sea never faded. He is a certified PADI Advanced Open Water diver, and his time beneath the waves directly fuels the immersive, aquatic worlds of his pirate fantasy series, The Voyages of Victora.
+                </div>
 
 
-              <div style={{ flex: 1 }}>{/* Placeholder for an author photo - you can add an image here later */}
-                <img src="/me.jpg" alt="Christopher Feveck" className="author-portrait" width="600px" style={{ backgroundSize: 'contain' }} />
-              </div>
 
-            </div></div>
-        </main>
-        <br /><br /><br />
+                {isMobile && <div className="bio-image"><img src='/vite.svg' className="author-portrait"/></div>}
+                {isTablet && <div className="bio-image"><img src="/me.jpg" alt="Christopher Feveck" className="author-portrait" /></div>}
+                {isDesktop && <div className="bio-image"><img src="/me.jpg" alt="Christopher Feveck" className="author-portrait" /></div>}
+
+            </div>
+            </div>
         {/* Book Series Section */}
-        <section className="books-section">
-          <h2>The Voyages of Victora Series</h2>
+        
+        <h2 className="book-section-header">The Voyages of Victora Series</h2>
           <hr />
-          <p>Dive into the acclaimed series where high-seas adventure meets ancient mystery. Follow the crew of the legendary ship <em>Victoria</em> as they battle ruthless pirates, navigate treacherous waters, and uncover secrets that could rewrite history.</p>
+          
+          <section className="books-section">
+          
+          <p className='book-description-text'>Dive into the acclaimed series where high-seas adventure meets ancient mystery. Follow the crew of the legendary ship <em>Victoria</em> as they battle ruthless pirates, navigate treacherous waters, and uncover secrets that could rewrite history.</p>
           {/* You can add book cover images and links here as needed */}
-          <div className="book-covers" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-            <img src="/voyages1.png" alt="The Voyages of Victora" height="160px" width="160px" />
-            <img src="/voyages2.jpg" alt=" The Voyages of Victora - The Vanishing Isle" height="160px" width="160px" />
+          <div className="book-covers">
+              <div>
+               <a href="https://t.co/J3zYY5ASlm" target="_blank">
+                <img src="/voyages1.png" alt="The Voyages of Victora" />                
+               </a>
+                <div>
+                    <a href="https://t.co/J3zYY5ASlm" target="_blank">
+                      <button>Get now!</button>
+                    </a>
+                  </div>   
+              </div>
+            
+              <div> 
+               <a href="https://t.co/J3zYY5ASlm" target="_blank">
+                <img src="/voyages2.jpg" alt=" The Voyages of Victora - The Vanishing Isle" />
+              </a>
+               <div>
+                <a href="https://t.co/J3zYY5ASlm" target="_blank">
+                  <button>Get now!</button>
+                </a>
+                </div> 
+              </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '20px' }}><a href="https://voyagesofvictora.web.app/" className="cta-button">Explore the Series</a>
-          </div></section>
-        <br /><br /><br /><br />
-      </div>
-      {/* Newsletter Sign-up Section */}
-      <section className="newsletter-section">
-        <h2 style={{color:'#fff'}}>Join the Crew's Log</h2>
-        <p style={{color:'#fff'}}>Sign up for my newsletter to get exclusive updates, behind-the-scenes insights, and first looks at new chapters.</p>
-        {/* This is a basic form structure; functionality would need to be connected to a service */}
+          
+          <div className='book-list-links' >
+            <div>
+              <a href="https://voyagesofvictora.web.app/" className="cta-button" target='_blank'>Explore the Series</a>
+           <br/><br/>
+            </div>
+          </div>
+          </section>
+            {/* Newsletter Sign-up Section */}
+      <section className="newsletter-section" id='signup'>
+        <h2 style={{ color: '#fff' }}>Join the Crew's Log</h2>
+        <p style={{ color: '#fff' }}>Sign up for my newsletter to get exclusive updates, behind-the-scenes insights, and first looks at new chapters.</p>
         <NewsletterSignup />
       </section>
+        </main>
+   
+      </div>
+      
 
       {/* Footer */}
       <footer className="site-footer">

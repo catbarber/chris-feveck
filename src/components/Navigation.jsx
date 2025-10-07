@@ -10,7 +10,7 @@ function Navigation() {
     <nav className="navigation">
       <div className="nav-content">
         <div className="nav-brand">
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>Christopher Feveck</Link>
+          <Link to="/" onClick={() => setIsMenuOpen(false)}><h1>Christopher Feveck</h1></Link>
         </div>
         
         <button 
