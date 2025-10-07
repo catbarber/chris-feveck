@@ -49,7 +49,7 @@ function AboutPage() {
       <section className="about-hero">
         <div className="hero-content">
           <div className="hero-text">
-            <h1>Hello, I'm Christopher</h1>
+            <h1>Hello, I'm Christopher</h1><br/>
             <p className="hero-subtitle">
               For Christopher Feveck, the sea is more than a setting—it's a character. Born and raised in the archipelago of Trinidad and Tobago, he grew up with saltwater in his veins and stories of explorers on the trade winds. After charting a course to King's University College in Edmonton, he found that even the prairie skies couldn't compete with his longing for the ocean's horizon.
 
@@ -96,6 +96,7 @@ function AboutPage() {
             <button className="btn-primary">Get In Touch</button>
   
           </div>
+          <br/>
         </div>
       </section>
     </div>

@@ -2,19 +2,36 @@
 .about-page {
   min-height: 100vh;
   background: linear-gradient(135deg, var(--spring-pastel) 0%, var(--spring-white) 100%);
+  
 }
 
 .about-hero {
   background: linear-gradient(135deg, var(--spring-primary) 0%, var(--spring-accent) 100%);
   color: var(--spring-white);
 }
-
+.hero-stats{
+  padding-left:20px;
+  padding-right:20px;
+}
 .hero-text h1 {
   background: none;
   -webkit-text-fill-color: var(--spring-white);
   color: var(--spring-white);
+  padding-left: 20px;
+  padding-right:20px;
 }
-
+.hero-subtitle{
+  color: var(--spring-white) !important;
+   padding-left:20px;
+  padding-right:20px;
+}
+.stat{
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color:var(--spring-white) !important
+}
+.stat-number{
+  color:var(--spring-white) !important;
+}
 .story-section,
 .skills-section,
 .experience-section,
@@ -26,9 +43,7 @@
   background: var(--spring-white);
   border-left: 4px solid var(--spring-primary);
 }
-.stat{
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+
 .skill-tag {
   background: var(--spring-primary);
   color: var(--spring-white);
@@ -48,16 +63,30 @@
   background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
 }
 
-.hero-stats{
- color: var(--spring-white);
- background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.story-section{
+  color:var(--spring-accent);
+
 }
 
-.test{
-  background: linear-gradient(135deg, var(--spring-primary), var(--spring-accent));
-
+.container > p {
+  padding-left:8px;
+  padding-right:8px;
+  color:var(--spring-white);
+}
+.cta-buttons{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  
 }
 /* Mobile styles */
 @media (max-width: 768px) {
-  
+.hero-subtitle{
+  padding-left:8px;
+  padding-right:8px;
+}
+.hero-stats{
+  padding-left:8px;
+  padding-right:8px;
+}
 }
