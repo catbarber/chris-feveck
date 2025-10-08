@@ -76,8 +76,8 @@ function DonationPage() {
         <header className="donation-header">
           <h1>Support My Work</h1>
           <p className="donation-subtitle">
-            Your contribution helps me continue creating valuable content, 
-            tutorials, and resources for the community.
+            Your contribution helps me continue creating novels, 
+            tutorials, web apps, and resources for the community.
           </p>
         </header>
 
@@ -85,25 +85,25 @@ function DonationPage() {
           <div className="donation-benefits">
             <h3>What your support enables:</h3>
             <ul className="benefits-list">
-              <li>🎯 Creating in-depth tutorials and articles</li>
+              <li>🎯 Creating in-depth programming tutorials</li>
               <li>🔧 Maintaining and improving existing projects</li>
-              <li>🆓 Keeping content free and accessible</li>
+              <li>🆓 Keeping content accessible</li>
               <li>💡 Exploring new technologies and sharing insights</li>
-              <li>🚀 Faster response to community questions</li>
+              <li>🚀 Web application and programming development</li>
             </ul>
             
             <div className="impact-stats">
               <div className="stat">
-                <div className="stat-number">50+</div>
-                <div className="stat-label">Articles Written</div>
+                <div className="stat-number">2</div>
+                <div className="stat-label">Novels Written</div>
               </div>
               <div className="stat">
-                <div className="stat-number">10k+</div>
-                <div className="stat-label">Developers Helped</div>
+                <div className="stat-number">5+</div>
+                <div className="stat-label">Happy Clients and Developers Helped</div>
               </div>
               <div className="stat">
                 <div className="stat-number">100%</div>
-                <div className="stat-label">Free Content</div>
+                <div className="stat-label">Affordable or Free Content</div>
               </div>
             </div>
           </div>
@@ -143,7 +143,8 @@ function DonationPage() {
             </div>
 
             <div className="form-section">
-              <label className="section-label">Payment Method</label>
+              <br/>
+              <label className="section-label"><h2>Payment Methods</h2></label>
               <div className="payment-methods">
                 <label className="payment-option">
                   <input
@@ -179,7 +180,7 @@ function DonationPage() {
                   </div>
                 </label>
 
-                <label className="payment-option">
+                {/* <label className="payment-option">
                   <input
                     type="radio"
                     name="payment-method"
@@ -194,7 +195,7 @@ function DonationPage() {
                       <div className="payment-desc">BTC, ETH, and other major cryptos</div>
                     </div>
                   </div>
-                </label>
+                </label> */}
               </div>
             </div>
 

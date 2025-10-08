@@ -96,14 +96,14 @@
 }
 
 .amount-option {
-  background: var(--spring-white);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: 2px solid var(--spring-primary);
-  color: var(--spring-primary);
+  color: var(--spring-white);
 }
 
 .amount-option.selected {
-  background: var(--spring-primary);
-  color: var(--spring-white);
+  background: var(--spring-blossom);
+  color: var(--spring-dark);
 }
 
 .donate-button {
@@ -115,6 +115,60 @@
   background: linear-gradient(135deg, var(--spring-secondary), var(--spring-primary));
 }
 
+.custom-amount-input {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  width: 80%;
+  box-sizing: border-box;
+}
+.custom-amount-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.custom-amount-input:hover:not(:focus):not(.disabled) {
+  border-color: #9ca3af;
+}
+
+.custom-amount-input.error {
+  border-color: #ef4444;
+}
+
+.custom-amount-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.custom-amount-input.disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 4px;
+}
+.section-label > h2{
+  font-weight: lighter !important;
+}
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.payment-icon{
+  font-size: 24px;
+}
 /* Mobile styles */
 @media (max-width: 768px) {
   .donation-content {

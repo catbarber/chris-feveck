@@ -132,7 +132,7 @@ function BlogPage() {
 
       {/* Search and Filter Section */}
       <section className="blog-filters">
-        <div className="container">
+        <div className="text-input-container">
           <div className="filters-content">
             <div className="search-box">
               <div className="search-icon">🔍</div>
@@ -149,7 +149,7 @@ function BlogPage() {
                   className="clear-search"
                   aria-label="Clear search"
                 >
-                  ✕
+                  Clear
                 </button>
               )}
             </div>
@@ -227,10 +227,13 @@ function BlogPage() {
                     </div>
                     
                     <div className="card-footer">
+                      <br/>
                       <button className="read-more-btn">
                         Read Article →
                       </button>
+                      
                     </div>
+                    <br/>
                   </article>
                 ))}
               </div>

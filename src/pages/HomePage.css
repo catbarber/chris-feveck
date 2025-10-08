@@ -23,7 +23,9 @@ button{
   opacity: 0.1;
   pointer-events: none;
 }
-
+.external-links-menu-top > a:hover {
+  color: var(--spring-primary) !important;
+}
 .home-header {
   text-align: center;
   margin-bottom: 4rem;

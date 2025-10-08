@@ -1,18 +1,22 @@
 /* src/pages/BlogPage.css */
 .blog-page {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background: linear-gradient(135deg, var(--spring-pastel) 0%, var(--spring-white) 100%);
 }
 
 .blog-hero {
   background: linear-gradient(135deg, var(--spring-primary) 0%, var(--spring-accent) 100%);
   color: var(--spring-white);
+  padding-bottom: 24px;
 }
 
-.blog-hero h1 {
+.blog-hero h1 {padding-top: 24px; padding-bottom: 24px;
   background: none;
   -webkit-text-fill-color: var(--spring-white);
   color: var(--spring-white);
+}
+.blog-hero p{
+  padding-bottom: 24px;;
 }
 
 .blog-card {
@@ -33,4 +37,93 @@
 .read-more-btn:hover {
   background: var(--spring-primary);
   color: var(--spring-white);
+}
+
+.blog-filters{
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.text-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.search-input-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.search-box{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.search-input {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  width: 80%;
+  box-sizing: border-box;
+}
+.search-icon{
+  font-size: 24px;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-input:hover:not(:focus):not(.disabled) {
+  border-color: #9ca3af;
+}
+
+.search-input.error {
+  border-color: #ef4444;
+}
+
+.search-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.search-input.disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.card-content{
+  margin-left:16px;
+}
+
+.read-time{
+  margin-left: 8px;;
+}
+
+.read-more-btn{
+  margin-left: 8px;
+}
+.filter-scroll{
+  padding-top:16px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }

@@ -1,8 +1,14 @@
 // src/pages/AboutPage.jsx
 import React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import './AboutPage.css';
 
 function AboutPage() {
+   const isMobile = useMediaQuery('(max-width: 767px)');
+    const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
+    
   const skills = [
     {
       category: "Frontend Development",
@@ -72,7 +78,9 @@ function AboutPage() {
           </div>
           <div className="hero-image">
             <div className="image-placeholder">
-              <div className="avatar">CB</div>
+              <div className="avatar">
+                <img src="/nothernlights.jpg" alt="nothern lights edmonton"/>
+              </div>
             </div>
           </div>
         </div>
