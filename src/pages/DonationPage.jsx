@@ -18,16 +18,26 @@ function DonationPage() {
 
   const handleCustomAmountChange = (e) => {
     const value = e.target.value;
-    setCustomAmount(value);
-    if (value) {
-      setDonationAmount(value);
+    // Allow only numbers and decimal point
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setCustomAmount(value);
+      if (value) {
+        setDonationAmount(value);
+      }
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsProcessing(true);
     
+    // Validate amount
+    const amount = parseFloat(donationAmount);
+    if (!amount || amount < 1) {
+      return;
+    }
+
+    setIsProcessing(true);
+
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
@@ -42,6 +52,12 @@ function DonationPage() {
     setPaymentMethod('stripe');
   };
 
+  const getDisplayAmount = () => {
+    if (!donationAmount) return '0';
+    const amount = parseFloat(donationAmount);
+    return amount % 1 === 0 ? amount.toString() : amount.toFixed(2);
+  };
+
   if (isSuccess) {
     return (
       <div className="donation-page">
@@ -51,18 +67,25 @@ function DonationPage() {
             <div className="success-checkmark">✓</div>
           </div>
           <h2>Thank You for Your Support!</h2>
-          <p>Your donation helps me continue creating valuable content and resources.</p>
+          <p>Your generous donation helps me continue creating valuable content, resources, and stories for everyone to enjoy.</p>
           <div className="success-details">
             <div className="detail-item">
               <span className="detail-label">Amount:</span>
-              <span className="detail-value">${donationAmount}</span>
+              <span className="detail-value">${getDisplayAmount()}</span>
             </div>
             <div className="detail-item">
               <span className="detail-label">Payment Method:</span>
-              <span className="detail-value">{paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1)}</span>
+              <span className="detail-value">
+                {paymentMethod === 'stripe' ? 'Credit/Debit Card' : 
+                 paymentMethod === 'paypal' ? 'PayPal' : 'Cryptocurrency'}
+              </span>
             </div>
           </div>
-          <button onClick={handleNewDonation} className="new-donation-btn">
+          <button 
+            onClick={handleNewDonation} 
+            className="new-donation-btn"
+            aria-label="Make another donation"
+          >
             Make Another Donation
           </button>
         </div>
@@ -77,7 +100,8 @@ function DonationPage() {
           <h1>Support My Work</h1>
           <p className="donation-subtitle">
             Your contribution helps me continue creating novels, 
-            tutorials, web apps, and resources for the community.
+            tutorials, web apps, and free resources for the community.
+            Every donation makes a difference!
           </p>
         </header>
 
@@ -87,23 +111,24 @@ function DonationPage() {
             <ul className="benefits-list">
               <li>🎯 Creating in-depth programming tutorials</li>
               <li>🔧 Maintaining and improving existing projects</li>
-              <li>🆓 Keeping content accessible</li>
+              <li>🆓 Keeping content accessible to everyone</li>
               <li>💡 Exploring new technologies and sharing insights</li>
               <li>🚀 Web application and programming development</li>
+              <li>📚 Writing and publishing new novels</li>
             </ul>
-            
+
             <div className="impact-stats">
               <div className="stat">
-                <div className="stat-number">2</div>
+                <div className="stat-number">2+</div>
                 <div className="stat-label">Novels Written</div>
               </div>
               <div className="stat">
                 <div className="stat-number">5+</div>
-                <div className="stat-label">Happy Clients and Developers Helped</div>
+                <div className="stat-label">Happy Clients</div>
               </div>
               <div className="stat">
                 <div className="stat-number">100%</div>
-                <div className="stat-label">Affordable or Free Content</div>
+                <div className="stat-label">Free Content</div>
               </div>
             </div>
           </div>
@@ -118,33 +143,40 @@ function DonationPage() {
                     type="button"
                     className={`amount-option ${donationAmount === amount.toString() ? 'selected' : ''}`}
                     onClick={() => handleAmountSelect(amount)}
+                    aria-label={`Donate $${amount}`}
                   >
                     ${amount}
                   </button>
                 ))}
               </div>
-              
+
               <div className="custom-amount">
                 <label htmlFor="custom-amount">Or enter custom amount:</label>
                 <div className="custom-input-wrapper">
                   <span className="currency-symbol">$</span>
                   <input
                     id="custom-amount"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     value={customAmount}
                     onChange={handleCustomAmountChange}
                     placeholder="0.00"
-                    min="1"
-                    step="0.01"
                     className="custom-amount-input"
+                    aria-label="Custom donation amount"
                   />
                 </div>
+                {customAmount && parseFloat(customAmount) < 1 && (
+                  <div className="error-message">
+                    Minimum donation amount is $1
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="form-section">
-              <br/>
-              <label className="section-label"><h2>Payment Methods</h2></label>
+              <label className="section-label">
+                <h2>Payment Method</h2>
+              </label>
               <div className="payment-methods">
                 <label className="payment-option">
                   <input
@@ -153,6 +185,7 @@ function DonationPage() {
                     value="stripe"
                     checked={paymentMethod === 'stripe'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
+                    aria-label="Credit or Debit Card payment"
                   />
                   <div className="payment-content">
                     <div className="payment-icon">💳</div>
@@ -170,6 +203,7 @@ function DonationPage() {
                     value="paypal"
                     checked={paymentMethod === 'paypal'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
+                    aria-label="PayPal payment"
                   />
                   <div className="payment-content">
                     <div className="payment-icon">📊</div>
@@ -179,23 +213,6 @@ function DonationPage() {
                     </div>
                   </div>
                 </label>
-
-                {/* <label className="payment-option">
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    value="crypto"
-                    checked={paymentMethod === 'crypto'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  />
-                  <div className="payment-content">
-                    <div className="payment-icon">₿</div>
-                    <div className="payment-info">
-                      <div className="payment-name">Cryptocurrency</div>
-                      <div className="payment-desc">BTC, ETH, and other major cryptos</div>
-                    </div>
-                  </div>
-                </label> */}
               </div>
             </div>
 
@@ -203,19 +220,20 @@ function DonationPage() {
               type="submit"
               disabled={!donationAmount || isProcessing || parseFloat(donationAmount) < 1}
               className="donate-button"
+              aria-label={`Donate $${getDisplayAmount()}`}
             >
               {isProcessing ? (
                 <>
-                  <div className="processing-spinner"></div>
+                  <div className="processing-spinner" aria-hidden="true"></div>
                   Processing...
                 </>
               ) : (
-                `Donate $${donationAmount || '0'}`
+                `Donate $${getDisplayAmount()}`
               )}
             </button>
 
             <div className="security-notice">
-              <div className="lock-icon">🔒</div>
+              <div className="lock-icon" aria-hidden="true">🔒</div>
               <span>Your payment is secure and encrypted</span>
             </div>
           </form>
