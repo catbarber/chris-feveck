@@ -182,9 +182,9 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  border: 2px solid var(--spring-light);
+  border: 2px solid var(--spring-primary);
   background: var(--spring-white);
-  color: var(--text-secondary);
+  color: var(--spring-accent);
   border-radius: 25px;
   font-weight: 500;
   cursor: pointer;
