@@ -82,7 +82,8 @@ function BlogPage() {
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = activeCategory === 'all' || post.category === activeCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = searchTerm === '' || 
+                         post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesCategory && matchesSearch;
@@ -93,16 +94,35 @@ function BlogPage() {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setActiveCategory('all');
+  };
+
   return (
     <div className="blog-page">
+      {/* Header */}
       <header className="hero-section">
-        <h3 className="tagline" style={{ padding: '0 20px', }}>Author of Swashbuckling Pirate Fantasy</h3>
-        <div style={{ padding: '0 20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}> <a href="https://voyagesofvictora.web.app/" target='_blank'>Explore The Voyages of Victora</a>
+        <h3 className="tagline">Author of Swashbuckling Pirate Fantasy</h3>
+        <div className="hero-links">
+          <a 
+            href="https://voyagesofvictora.web.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hero-link"
+          >
+            Explore The Voyages of Victora
+          </a>
+          <a href="#newsletter" className="hero-link">
+            Sign Up for a Free Short Story
+          </a>
+        </div>
+      </header>
 
-          <a>Sign Up for a Free Short Story</a>
-        </div>     </header>
-      <br />
-      <br />
       {/* Hero Section */}
       <section className="blog-hero">
         <div className="container">
@@ -132,41 +152,42 @@ function BlogPage() {
 
       {/* Search and Filter Section */}
       <section className="blog-filters">
-        <div className="text-input-container">
-          <div className="filters-content">
-            <div className="search-box">
-              <div className="search-icon">🔍</div>
-              <input
-                type="text"
-                placeholder="Search articles, topics, or keywords..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              {searchTerm && (
-                <button 
-                  onClick={() => setSearchTerm('')}
-                  className="clear-search"
-                  aria-label="Clear search"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
+        <div className="filters-content">
+          <div className="search-box">
+            <div className="search-icon">🔍</div>
+            <input
+              type="text"
+              placeholder="Search articles, topics, or keywords..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+              aria-label="Search blog posts"
+            />
+            {searchTerm && (
+              <button 
+                onClick={handleClearSearch}
+                className="clear-search"
+                aria-label="Clear search"
+              >
+                Clear
+              </button>
+            )}
+          </div>
 
-            <div className="category-filters">
-              <div className="filter-scroll">
-                {categories.map(category => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
-                    className={`filter-btn ${activeCategory === category.id ? 'active' : ''}`}
-                  >
-                    {category.name}
-                    <span className="post-count">({category.count})</span>
-                  </button>
-                ))}
-              </div>
+          <div className="category-filters">
+            <div className="filter-scroll">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`filter-btn ${activeCategory === category.id ? 'active' : ''}`}
+                  aria-label={`Filter by ${category.name}`}
+                  aria-pressed={activeCategory === category.id}
+                >
+                  {category.name}
+                  <span className="post-count">({category.count})</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -181,10 +202,7 @@ function BlogPage() {
               <h3>No articles found</h3>
               <p>Try adjusting your search or filter criteria</p>
               <button 
-                onClick={() => {
-                  setSearchTerm('');
-                  setActiveCategory('all');
-                }}
+                onClick={handleResetFilters}
                 className="reset-filters"
               >
                 Reset Filters
@@ -227,13 +245,13 @@ function BlogPage() {
                     </div>
                     
                     <div className="card-footer">
-                      <br/>
-                      <button className="read-more-btn">
+                      <button 
+                        className="read-more-btn"
+                        aria-label={`Read more about ${post.title}`}
+                      >
                         Read Article →
                       </button>
-                      
                     </div>
-                    <br/>
                   </article>
                 ))}
               </div>
@@ -243,7 +261,7 @@ function BlogPage() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="blog-newsletter">
+      <section id="newsletter" className="blog-newsletter">
         <div className="container">
           <div className="newsletter-content">
             <div className="newsletter-text">
@@ -255,6 +273,7 @@ function BlogPage() {
                 type="email" 
                 placeholder="Enter your email address..."
                 className="newsletter-input"
+                aria-label="Email address for newsletter"
               />
               <button className="newsletter-btn">
                 Subscribe
