@@ -524,7 +524,12 @@
 }
 
 @media (max-width: 480px) {
-  .blog-hero h1 {
+ .filter-scroll{
+display:flex;
+flex-flow:row wrap;
+}
+
+ .blog-hero h1 {
     font-size: 2rem;
   }
 
