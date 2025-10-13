@@ -26,8 +26,7 @@ function Navigation() {
           <li><Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
           <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
           <li><Link to="/donate" onClick={() => setIsMenuOpen(false)}>Donate</Link></li>
-// Add this to your nav links
-<li><Link to="/scuba" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+<li><Link to="/scuba" onClick={() => setIsMenuOpen(false)}>
   🤿 Scuba
 </Link></li>
         </ul>
