@@ -22,7 +22,7 @@ function Navigation() {
         </button>
 
         <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-          <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
+          <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home 🏠</Link></li>
 
 <li><Link to="/scuba" onClick={() => setIsMenuOpen(false)}>
 My Scuba Life 🤿
@@ -32,9 +32,9 @@ My Scuba Life 🤿
 Programming 💻
 </Link></li>
 
-       <li><Link to="/donate" onClick={() => setIsMenuOpen(false)}>Donate</Link></li>
-          <li><Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
-          <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
+       <li><Link to="/donate" onClick={() => setIsMenuOpen(false)}>Donate 💸</Link></li>
+          <li><Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog 📚</Link></li>
+          <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About ℹ️</Link></li>
    
         </ul>
       </div>
