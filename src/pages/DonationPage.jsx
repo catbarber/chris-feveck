@@ -2,75 +2,249 @@
 import React, { useState } from 'react';
 import './DonationPage.css';
 
-// Mock payment service functions (replace with actual payment gateway)
+// Google Cloud Functions base URL (replace with your actual Cloud Functions URL)
+const CLOUD_FUNCTIONS_BASE_URL = 'https://us-central1-your-project-id.cloudfunctions.net';
+
+// Payment service using Google Cloud Functions
 const PaymentService = {
-  // Simulate Stripe payment processing
+  // Process Stripe payment via Cloud Function
   processStripePayment: async (amount, email, paymentMethodId) => {
-    // In a real app, you would call your backend API here
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          paymentId: 'pi_' + Math.random().toString(36).substr(2, 9),
-          amount: amount,
-          email: email
-        });
-      }, 2000);
-    });
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/createStripePaymentIntent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: Math.round(amount * 100), // Convert to cents
+          currency: 'usd',
+          email: email,
+          paymentMethodId: paymentMethodId,
+          metadata: {
+            donorEmail: email,
+            project: 'author-website'
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Stripe payment error:', error);
+      throw new Error('Payment processing failed. Please try again.');
+    }
   },
 
-  // Simulate PayPal payment processing
+  // Process PayPal payment via Cloud Function
   processPayPalPayment: async (amount, email) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          paymentId: 'PAY-' + Math.random().toString(36).substr(2, 9),
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/createPayPalOrder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           amount: amount,
-          email: email
-        });
-      }, 2000);
-    });
+          currency: 'USD',
+          email: email,
+          description: 'Donation to Christopher Feveck - Author Support'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      return result;
+    } catch (error) {
+      console.error('PayPal payment error:', error);
+      throw new Error('PayPal payment failed. Please try again.');
+    }
   },
 
-  // Simulate cryptocurrency payment
-  processCryptoPayment: async (amount, currency, walletAddress) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          transactionHash: '0x' + Math.random().toString(36).substr(2, 64),
+  // Capture PayPal payment
+  capturePayPalPayment: async (orderID) => {
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/capturePayPalOrder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderID: orderID
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('PayPal capture error:', error);
+      throw new Error('Payment capture failed.');
+    }
+  },
+
+  // Create cryptocurrency payment invoice
+  processCryptoPayment: async (amount, currency, email) => {
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/createCryptoInvoice`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           amount: amount,
-          currency: currency
-        });
-      }, 2000);
-    });
+          currency: currency,
+          email: email,
+          coins: ['BTC', 'ETH', 'USDC'], // Supported cryptocurrencies
+          description: 'Donation to Christopher Feveck'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Crypto payment error:', error);
+      throw new Error('Cryptocurrency payment setup failed.');
+    }
+  },
+
+  // Check crypto payment status
+  checkCryptoPaymentStatus: async (invoiceId) => {
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/checkCryptoPayment/${invoiceId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Crypto status check error:', error);
+      throw new Error('Payment status check failed.');
+    }
   }
 };
 
-// Email service for receipts
+// Email service using Google Cloud Functions
 const EmailService = {
   sendDonationReceipt: async (donationData) => {
-    // In a real app, you would call your email service API here
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('Receipt sent to:', donationData.email);
-        resolve({ success: true });
-      }, 1000);
-    });
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/sendDonationReceipt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: donationData.email,
+          subject: 'Thank you for your donation!',
+          templateData: {
+            donorName: donationData.name || 'Supporter',
+            amount: donationData.amount,
+            paymentMethod: donationData.paymentMethod,
+            transactionId: donationData.paymentId,
+            date: new Date().toLocaleDateString()
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Email sending error:', error);
+      // Don't throw error for email failures - payment was still successful
+      return { success: false, error: error.message };
+    }
+  },
+
+  sendAdminNotification: async (donationData) => {
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/sendAdminNotification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subject: 'New Donation Received',
+          donation: donationData
+        }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Admin notification error:', error);
+    }
   }
 };
 
-// Local storage for donation history
+// Analytics service using Google Cloud Functions
+const AnalyticsService = {
+  trackDonation: async (donationData) => {
+    try {
+      const response = await fetch(`${CLOUD_FUNCTIONS_BASE_URL}/trackDonation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          event: 'donation_completed',
+          donation: donationData,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          language: navigator.language
+        }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Analytics tracking error:', error);
+    }
+  }
+};
+
+// Local storage for donation history (client-side fallback)
 const DonationStorage = {
   saveDonation: (donationData) => {
-    const donations = DonationStorage.getDonations();
-    donations.push({
-      ...donationData,
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString()
-    });
-    localStorage.setItem('donationHistory', JSON.stringify(donations));
+    try {
+      const donations = DonationStorage.getDonations();
+      donations.push({
+        ...donationData,
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('donationHistory', JSON.stringify(donations));
+    } catch (error) {
+      console.error('Local storage error:', error);
+    }
   },
 
   getDonations: () => {
@@ -95,13 +269,16 @@ function DonationPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
-  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [donorName, setDonorName] = useState('');
+  const [showDonorInfo, setShowDonorInfo] = useState(false);
   const [donationData, setDonationData] = useState(null);
+  const [cryptoInvoice, setCryptoInvoice] = useState(null);
 
   const presetAmounts = [5, 10, 25, 50, 100];
 
   // Validation functions
   const validateEmail = (email) => {
+    if (!email) return true; // Email is optional
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -129,10 +306,10 @@ function DonationPage() {
     }
   };
 
-  const handleEmailSubmit = async (e) => {
+  const handleDonorInfoSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateEmail(donorEmail)) {
+    if (donorEmail && !validateEmail(donorEmail)) {
       setError('Please enter a valid email address');
       return;
     }
@@ -151,57 +328,47 @@ function DonationPage() {
 
     try {
       let paymentResult;
+      const amount = parseFloat(donationAmount);
 
       switch (paymentMethod) {
         case 'stripe':
+          // For Stripe, you would typically use Stripe.js on the client side
+          // and only use Cloud Functions for creating payment intents
           paymentResult = await PaymentService.processStripePayment(
-            parseFloat(donationAmount),
+            amount,
             donorEmail,
-            'mock_payment_method_id'
+            'payment_method_id_required' // This would come from Stripe Elements
           );
           break;
+
         case 'paypal':
-          paymentResult = await PaymentService.processPayPalPayment(
-            parseFloat(donationAmount),
-            donorEmail
-          );
+          // For PayPal, create order and then redirect to PayPal
+          paymentResult = await PaymentService.processPayPalPayment(amount, donorEmail);
+          if (paymentResult.success && paymentResult.approveUrl) {
+            // Redirect to PayPal approval URL
+            window.location.href = paymentResult.approveUrl;
+            return;
+          }
           break;
+
         case 'crypto':
-          paymentResult = await PaymentService.processCryptoPayment(
-            parseFloat(donationAmount),
-            'USD',
-            'mock_wallet_address'
-          );
+          // For crypto, create invoice and show payment details
+          paymentResult = await PaymentService.processCryptoPayment(amount, 'USD', donorEmail);
+          if (paymentResult.success) {
+            setCryptoInvoice(paymentResult.invoice);
+            // Don't set success yet - wait for payment confirmation
+            return;
+          }
           break;
+
         default:
           throw new Error('Unsupported payment method');
       }
 
       if (paymentResult.success) {
-        // Save donation data
-        const donationRecord = {
-          amount: donationAmount,
-          paymentMethod: paymentMethod,
-          email: donorEmail,
-          paymentId: paymentResult.paymentId || paymentResult.transactionHash,
-          timestamp: new Date().toISOString()
-        };
-
-        // Store donation locally
-        DonationStorage.saveDonation(donationRecord);
-
-        // Send receipt if email provided
-        if (donorEmail) {
-          await EmailService.sendDonationReceipt(donationRecord);
-        }
-
-        setDonationData(donationRecord);
-        setIsSuccess(true);
-        
-        // Track donation analytics
-        trackDonationEvent(donationRecord);
+        await completeDonationProcess(paymentResult, amount);
       } else {
-        throw new Error('Payment processing failed');
+        throw new Error(paymentResult.error || 'Payment processing failed');
       }
     } catch (err) {
       setError(err.message || 'Payment failed. Please try again.');
@@ -211,24 +378,38 @@ function DonationPage() {
     }
   };
 
-  // Analytics tracking
-  const trackDonationEvent = (donation) => {
-    // In a real app, you would send this to your analytics service
-    console.log('Donation completed:', donation);
-    
-    // Example: Send to Google Analytics
-    if (window.gtag) {
-      window.gtag('event', 'donation', {
-        'event_category': 'engagement',
-        'event_label': donation.paymentMethod,
-        'value': parseFloat(donation.amount)
-      });
+  const completeDonationProcess = async (paymentResult, amount) => {
+    // Save donation data
+    const donationRecord = {
+      amount: amount,
+      paymentMethod: paymentMethod,
+      email: donorEmail,
+      name: donorName,
+      paymentId: paymentResult.paymentId || paymentResult.id,
+      timestamp: new Date().toISOString()
+    };
+
+    // Store donation locally
+    DonationStorage.saveDonation(donationRecord);
+
+    // Send receipt if email provided
+    if (donorEmail) {
+      await EmailService.sendDonationReceipt(donationRecord);
     }
+
+    // Send admin notification
+    await EmailService.sendAdminNotification(donationRecord);
+
+    // Track analytics
+    await AnalyticsService.trackDonation(donationRecord);
+
+    setDonationData(donationRecord);
+    setIsSuccess(true);
   };
 
   const handleDonateClick = () => {
-    if (!donorEmail) {
-      setShowEmailInput(true);
+    if (!showDonorInfo) {
+      setShowDonorInfo(true);
     } else {
       processDonation();
     }
@@ -240,9 +421,11 @@ function DonationPage() {
     setCustomAmount('');
     setPaymentMethod('stripe');
     setDonorEmail('');
-    setShowEmailInput(false);
+    setDonorName('');
+    setShowDonorInfo(false);
     setError('');
     setDonationData(null);
+    setCryptoInvoice(null);
   };
 
   const getTotalDonations = () => {
@@ -255,6 +438,55 @@ function DonationPage() {
       currency: 'USD'
     }).format(amount);
   };
+
+  // Crypto payment display component
+  const CryptoPaymentDisplay = () => {
+    if (!cryptoInvoice) return null;
+
+    return (
+      <div className="crypto-payment-section">
+        <h3>Cryptocurrency Payment</h3>
+        <div className="crypto-details">
+          <p>Please send <strong>{cryptoInvoice.amount} {cryptoInvoice.currency}</strong> to:</p>
+          <div className="wallet-address">
+            <code>{cryptoInvoice.address}</code>
+            <button 
+              onClick={() => navigator.clipboard.writeText(cryptoInvoice.address)}
+              className="copy-button"
+            >
+              Copy
+            </button>
+          </div>
+          {cryptoInvoice.qrCode && (
+            <div className="qr-code">
+              <img src={cryptoInvoice.qrCode} alt="QR Code for payment" />
+            </div>
+          )}
+          <p className="crypto-note">
+            Payment will be confirmed automatically once received. This may take 10-30 minutes.
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  if (cryptoInvoice) {
+    return (
+      <div className="donation-page">
+        <div className="crypto-payment-page">
+          <CryptoPaymentDisplay />
+          <div className="crypto-actions">
+            <button onClick={() => setCryptoInvoice(null)} className="back-button">
+              Choose Different Payment Method
+            </button>
+            <button onClick={handleNewDonation} className="cancel-button">
+              Cancel Donation
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isSuccess) {
     return (
@@ -398,37 +630,42 @@ function DonationPage() {
               </div>
             </div>
 
-            {showEmailInput && (
+            {showDonorInfo && (
               <div className="form-section">
                 <label className="section-label">
-                  <h2>Email for Receipt (Optional)</h2>
+                  <h2>Your Information (Optional)</h2>
                 </label>
-                <div className="email-input-wrapper">
-                  <input
-                    type="email"
-                    value={donorEmail}
-                    onChange={(e) => setDonorEmail(e.target.value)}
-                    placeholder="your.email@example.com"
-                    className="email-input"
-                    aria-label="Email address for donation receipt"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleEmailSubmit}
-                    disabled={!validateEmail(donorEmail)}
-                    className="email-submit-btn"
-                  >
-                    Continue
-                  </button>
+                <div className="donor-info-fields">
+                  <div className="input-group">
+                    <label htmlFor="donor-name">Name (Optional)</label>
+                    <input
+                      id="donor-name"
+                      type="text"
+                      value={donorName}
+                      onChange={(e) => setDonorName(e.target.value)}
+                      placeholder="Your name"
+                      className="donor-input"
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="donor-email">Email for Receipt (Optional)</label>
+                    <input
+                      id="donor-email"
+                      type="email"
+                      value={donorEmail}
+                      onChange={(e) => setDonorEmail(e.target.value)}
+                      placeholder="your.email@example.com"
+                      className="donor-input"
+                    />
+                  </div>
                 </div>
-                <p className="email-note">
-                  Providing your email ensures you receive a receipt for your donation. 
-                  Your information is secure and will never be shared.
+                <p className="privacy-note">
+                  Your information is secure and will never be shared. Email is only used to send your receipt.
                 </p>
               </div>
             )}
 
-            {!showEmailInput && (
+            {!showDonorInfo && (
               <div className="form-section">
                 <br/>
                 <label className="section-label"><h2>Payment Method</h2></label>
@@ -468,6 +705,24 @@ function DonationPage() {
                       </div>
                     </div>
                   </label>
+
+                  <label className="payment-option">
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      value="crypto"
+                      checked={paymentMethod === 'crypto'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      aria-label="Cryptocurrency payment"
+                    />
+                    <div className="payment-content">
+                      <div className="payment-icon">₿</div>
+                      <div className="payment-info">
+                        <div className="payment-name">Cryptocurrency</div>
+                        <div className="payment-desc">BTC, ETH, USDC, and more</div>
+                      </div>
+                    </div>
+                  </label>
                 </div>
               </div>
             )}
@@ -480,8 +735,8 @@ function DonationPage() {
 
             <button
               type="button"
-              onClick={showEmailInput ? handleEmailSubmit : handleDonateClick}
-              disabled={!donationAmount || isProcessing || !validateAmount(donationAmount) || (showEmailInput && !validateEmail(donorEmail))}
+              onClick={showDonorInfo ? handleDonorInfoSubmit : handleDonateClick}
+              disabled={!donationAmount || isProcessing || !validateAmount(donationAmount)}
               className="donate-button"
               aria-label={`Donate $${donationAmount || '0'}`}
             >
@@ -490,8 +745,8 @@ function DonationPage() {
                   <div className="processing-spinner" aria-hidden="true"></div>
                   Processing...
                 </>
-              ) : showEmailInput ? (
-                'Continue to Payment'
+              ) : showDonorInfo ? (
+                `Complete Donation of $${donationAmount}`
               ) : (
                 `Donate $${donationAmount || '0'}`
               )}
@@ -499,7 +754,7 @@ function DonationPage() {
 
             <div className="security-notice">
               <div className="lock-icon" aria-hidden="true">🔒</div>
-              <span>Your payment is secure and encrypted</span>
+              <span>All payments are securely processed and encrypted</span>
             </div>
           </form>
         </div>
