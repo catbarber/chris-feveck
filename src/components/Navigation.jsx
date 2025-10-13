@@ -28,7 +28,7 @@ function Navigation() {
 My Scuba Life 🤿
 </Link></li>
 <li>
-<Link to="/programming">
+<Link to="/programming" onClick={() => setIsMenuOpen(false)}>
 Programming 💻
 </Link></li>
 
