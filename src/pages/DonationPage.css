@@ -1,37 +1,26 @@
-/* Add these styles to your existing DonationPage.css */
+/* Enhanced styles for Google Cloud Functions integration */
 
-/* Total Raised Display */
-.total-raised {
-  text-align: center;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-}
-
-.total-label {
-  display: block;
-  font-size: 0.9rem;
-  opacity: 0.9;
-  margin-bottom: 0.5rem;
-}
-
-.total-amount {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #80deea;
-}
-
-/* Email Input Section */
-.email-input-wrapper {
+/* Donor Information Fields */
+.donor-info-fields {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.email-input {
-  flex: 1;
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.donor-input {
   padding: 1rem;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
@@ -39,13 +28,106 @@
   transition: all 0.3s ease;
 }
 
-.email-input:focus {
+.donor-input:focus {
   outline: none;
   border-color: var(--spring-primary);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.email-submit-btn {
+.privacy-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Crypto Payment Section */
+.crypto-payment-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.crypto-payment-section h3 {
+  color: var(--spring-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.crypto-details {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.wallet-address {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wallet-address code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+  flex: 1;
+  text-align: left;
+}
+
+.copy-button {
+  background: var(--spring-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copy-button:hover {
+  background: var(--spring-secondary);
+}
+
+.qr-code {
+  margin: 1rem 0;
+}
+
+.qr-code img {
+  max-width: 200px;
+  height: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.crypto-note {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 1rem 0 0 0;
+}
+
+.crypto-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.back-button {
   background: var(--spring-primary);
   color: white;
   border: none;
@@ -54,49 +136,16 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  white-space: nowrap;
 }
 
-.email-submit-btn:hover:not(:disabled) {
+.back-button:hover {
   background: var(--spring-secondary);
 }
 
-.email-submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.email-note {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* Error Banner */
-.error-banner {
-  background: #fee2e2;
-  color: #dc2626;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #fecaca;
-  margin: 1rem 0;
-  font-weight: 500;
-}
-
-/* Enhanced Success State */
-.success-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 2rem 0;
-}
-
-.print-receipt-btn {
+.cancel-button {
   background: transparent;
-  color: var(--spring-primary);
-  border: 2px solid var(--spring-primary);
+  color: var(--text-secondary);
+  border: 2px solid var(--text-secondary);
   padding: 1rem 2rem;
   border-radius: 8px;
   font-weight: 600;
@@ -104,36 +153,27 @@
   transition: all 0.3s ease;
 }
 
-.print-receipt-btn:hover {
-  background: var(--spring-primary);
+.cancel-button:hover {
+  background: var(--text-secondary);
   color: white;
 }
 
-.transaction-id {
-  font-family: 'Courier New', monospace;
+/* Enhanced Security Notice */
+.security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--text-secondary);
   font-size: 0.9rem;
-  word-break: break-all;
+  font-weight: 500;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 1rem;
 }
 
-.community-impact {
-  text-align: center;
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--spring-light);
-  border-radius: 12px;
-}
-
-.community-impact h3 {
-  color: var(--spring-primary);
-  margin-bottom: 1rem;
-}
-
-.community-impact p {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-/* Loading States */
+/* Loading States Enhancement */
 .processing-spinner {
   width: 20px;
   height: 20px;
@@ -148,31 +188,46 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Print Styles */
+/* Enhanced Mobile Styles */
+@media (max-width: 768px) {
+  .donor-info-fields {
+    gap: 0.75rem;
+  }
+  
+  .crypto-payment-page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .wallet-address {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .crypto-actions {
+    flex-direction: column;
+  }
+  
+  .back-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
+
+/* Print Styles for Receipts */
 @media print {
   .donation-success {
     box-shadow: none !important;
     border: 1px solid #ccc !important;
   }
   
-  .success-actions {
+  .success-actions,
+  .crypto-actions {
     display: none !important;
   }
-}
-
-/* Enhanced Mobile Styles */
-@media (max-width: 768px) {
-  .email-input-wrapper {
-    flex-direction: column;
-  }
   
-  .success-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .new-donation-btn,
-  .print-receipt-btn {
-    width: 200px;
+  .security-notice {
+    border: 1px solid #ccc !important;
+    background: white !important;
   }
 }
