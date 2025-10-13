@@ -442,8 +442,8 @@
 }
 
 .newsletter-btn {
-  background: var(--spring-white);
-  color: var(--spring-primary);
+  background: var(--spring-accent);
+  color: var(--spring-white);
   border: none;
   padding: 1rem 2rem;
   border-radius: 8px;
