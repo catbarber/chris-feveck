@@ -23,14 +23,16 @@ function Navigation() {
 
         <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
           <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
-       <li><Link to="/donate" onClick={() => setIsMenuOpen(false)}>Donate</Link></li>
+
 <li><Link to="/scuba" onClick={() => setIsMenuOpen(false)}>
 My Scuba Life 🤿
 </Link></li>
 <li>
 <Link to="/programming">
-  💻 Programming
+Programming 💻
 </Link></li>
+
+       <li><Link to="/donate" onClick={() => setIsMenuOpen(false)}>Donate</Link></li>
           <li><Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
           <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
    
