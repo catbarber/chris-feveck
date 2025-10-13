@@ -2,47 +2,236 @@
 import React, { useState } from 'react';
 import './DonationPage.css';
 
+// Mock payment service functions (replace with actual payment gateway)
+const PaymentService = {
+  // Simulate Stripe payment processing
+  processStripePayment: async (amount, email, paymentMethodId) => {
+    // In a real app, you would call your backend API here
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          paymentId: 'pi_' + Math.random().toString(36).substr(2, 9),
+          amount: amount,
+          email: email
+        });
+      }, 2000);
+    });
+  },
+
+  // Simulate PayPal payment processing
+  processPayPalPayment: async (amount, email) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          paymentId: 'PAY-' + Math.random().toString(36).substr(2, 9),
+          amount: amount,
+          email: email
+        });
+      }, 2000);
+    });
+  },
+
+  // Simulate cryptocurrency payment
+  processCryptoPayment: async (amount, currency, walletAddress) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          transactionHash: '0x' + Math.random().toString(36).substr(2, 64),
+          amount: amount,
+          currency: currency
+        });
+      }, 2000);
+    });
+  }
+};
+
+// Email service for receipts
+const EmailService = {
+  sendDonationReceipt: async (donationData) => {
+    // In a real app, you would call your email service API here
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('Receipt sent to:', donationData.email);
+        resolve({ success: true });
+      }, 1000);
+    });
+  }
+};
+
+// Local storage for donation history
+const DonationStorage = {
+  saveDonation: (donationData) => {
+    const donations = DonationStorage.getDonations();
+    donations.push({
+      ...donationData,
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('donationHistory', JSON.stringify(donations));
+  },
+
+  getDonations: () => {
+    try {
+      return JSON.parse(localStorage.getItem('donationHistory') || '[]');
+    } catch {
+      return [];
+    }
+  },
+
+  getTotalDonated: () => {
+    const donations = DonationStorage.getDonations();
+    return donations.reduce((total, donation) => total + parseFloat(donation.amount), 0);
+  }
+};
+
 function DonationPage() {
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [donationData, setDonationData] = useState(null);
 
   const presetAmounts = [5, 10, 25, 50, 100];
 
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateAmount = (amount) => {
+    const numAmount = parseFloat(amount);
+    return !isNaN(numAmount) && numAmount >= 1 && numAmount <= 10000;
+  };
+
+  // Donation handlers
   const handleAmountSelect = (amount) => {
     setDonationAmount(amount.toString());
     setCustomAmount('');
+    setError('');
   };
 
   const handleCustomAmountChange = (e) => {
     const value = e.target.value;
-    // Allow only numbers and decimal point
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
-      setCustomAmount(value);
-      if (value) {
-        setDonationAmount(value);
-      }
+    setCustomAmount(value);
+    if (value && validateAmount(value)) {
+      setDonationAmount(value);
+      setError('');
+    } else if (value) {
+      setDonationAmount('');
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate amount
-    const amount = parseFloat(donationAmount);
-    if (!amount || amount < 1) {
+    if (!validateEmail(donorEmail)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    await processDonation();
+  };
+
+  const processDonation = async () => {
+    if (!validateAmount(donationAmount)) {
+      setError('Please enter a valid amount between $1 and $10,000');
       return;
     }
 
     setIsProcessing(true);
+    setError('');
 
-    // Simulate payment processing
-    setTimeout(() => {
+    try {
+      let paymentResult;
+
+      switch (paymentMethod) {
+        case 'stripe':
+          paymentResult = await PaymentService.processStripePayment(
+            parseFloat(donationAmount),
+            donorEmail,
+            'mock_payment_method_id'
+          );
+          break;
+        case 'paypal':
+          paymentResult = await PaymentService.processPayPalPayment(
+            parseFloat(donationAmount),
+            donorEmail
+          );
+          break;
+        case 'crypto':
+          paymentResult = await PaymentService.processCryptoPayment(
+            parseFloat(donationAmount),
+            'USD',
+            'mock_wallet_address'
+          );
+          break;
+        default:
+          throw new Error('Unsupported payment method');
+      }
+
+      if (paymentResult.success) {
+        // Save donation data
+        const donationRecord = {
+          amount: donationAmount,
+          paymentMethod: paymentMethod,
+          email: donorEmail,
+          paymentId: paymentResult.paymentId || paymentResult.transactionHash,
+          timestamp: new Date().toISOString()
+        };
+
+        // Store donation locally
+        DonationStorage.saveDonation(donationRecord);
+
+        // Send receipt if email provided
+        if (donorEmail) {
+          await EmailService.sendDonationReceipt(donationRecord);
+        }
+
+        setDonationData(donationRecord);
+        setIsSuccess(true);
+        
+        // Track donation analytics
+        trackDonationEvent(donationRecord);
+      } else {
+        throw new Error('Payment processing failed');
+      }
+    } catch (err) {
+      setError(err.message || 'Payment failed. Please try again.');
+      console.error('Donation error:', err);
+    } finally {
       setIsProcessing(false);
-      setIsSuccess(true);
-    }, 2000);
+    }
+  };
+
+  // Analytics tracking
+  const trackDonationEvent = (donation) => {
+    // In a real app, you would send this to your analytics service
+    console.log('Donation completed:', donation);
+    
+    // Example: Send to Google Analytics
+    if (window.gtag) {
+      window.gtag('event', 'donation', {
+        'event_category': 'engagement',
+        'event_label': donation.paymentMethod,
+        'value': parseFloat(donation.amount)
+      });
+    }
+  };
+
+  const handleDonateClick = () => {
+    if (!donorEmail) {
+      setShowEmailInput(true);
+    } else {
+      processDonation();
+    }
   };
 
   const handleNewDonation = () => {
@@ -50,12 +239,21 @@ function DonationPage() {
     setDonationAmount('');
     setCustomAmount('');
     setPaymentMethod('stripe');
+    setDonorEmail('');
+    setShowEmailInput(false);
+    setError('');
+    setDonationData(null);
   };
 
-  const getDisplayAmount = () => {
-    if (!donationAmount) return '0';
-    const amount = parseFloat(donationAmount);
-    return amount % 1 === 0 ? amount.toString() : amount.toFixed(2);
+  const getTotalDonations = () => {
+    return DonationStorage.getTotalDonated();
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
   };
 
   if (isSuccess) {
@@ -71,23 +269,43 @@ function DonationPage() {
           <div className="success-details">
             <div className="detail-item">
               <span className="detail-label">Amount:</span>
-              <span className="detail-value">${getDisplayAmount()}</span>
+              <span className="detail-value">{formatCurrency(parseFloat(donationData.amount))}</span>
             </div>
             <div className="detail-item">
               <span className="detail-label">Payment Method:</span>
               <span className="detail-value">
-                {paymentMethod === 'stripe' ? 'Credit/Debit Card' : 
-                 paymentMethod === 'paypal' ? 'PayPal' : 'Cryptocurrency'}
+                {donationData.paymentMethod === 'stripe' ? 'Credit/Debit Card' : 
+                 donationData.paymentMethod === 'paypal' ? 'PayPal' : 'Cryptocurrency'}
               </span>
             </div>
+            <div className="detail-item">
+              <span className="detail-label">Transaction ID:</span>
+              <span className="detail-value transaction-id">
+                {donationData.paymentId}
+              </span>
+            </div>
+            {donationData.email && (
+              <div className="detail-item">
+                <span className="detail-label">Receipt sent to:</span>
+                <span className="detail-value">{donationData.email}</span>
+              </div>
+            )}
           </div>
-          <button 
-            onClick={handleNewDonation} 
-            className="new-donation-btn"
-            aria-label="Make another donation"
-          >
-            Make Another Donation
-          </button>
+          <div className="success-actions">
+            <button onClick={handleNewDonation} className="new-donation-btn">
+              Make Another Donation
+            </button>
+            <button 
+              onClick={() => window.print()} 
+              className="print-receipt-btn"
+            >
+              Print Receipt
+            </button>
+          </div>
+          <div className="community-impact">
+            <h3>Community Impact</h3>
+            <p>Your contribution joins <strong>{formatCurrency(getTotalDonations())}</strong> in total community support!</p>
+          </div>
         </div>
       </div>
     );
@@ -103,6 +321,10 @@ function DonationPage() {
             tutorials, web apps, and free resources for the community.
             Every donation makes a difference!
           </p>
+          <div className="total-raised">
+            <span className="total-label">Total Community Support:</span>
+            <span className="total-amount">{formatCurrency(getTotalDonations())}</span>
+          </div>
         </header>
 
         <div className="donation-content">
@@ -133,7 +355,7 @@ function DonationPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="donation-form">
+          <form onSubmit={(e) => e.preventDefault()} className="donation-form">
             <div className="form-section">
               <label className="section-label">Select Amount (USD)</label>
               <div className="amount-options">
@@ -156,79 +378,122 @@ function DonationPage() {
                   <span className="currency-symbol">$</span>
                   <input
                     id="custom-amount"
-                    type="text"
+                    type="number"
                     inputMode="decimal"
                     value={customAmount}
                     onChange={handleCustomAmountChange}
                     placeholder="0.00"
+                    min="1"
+                    max="10000"
+                    step="0.01"
                     className="custom-amount-input"
                     aria-label="Custom donation amount"
                   />
                 </div>
-                {customAmount && parseFloat(customAmount) < 1 && (
+                {customAmount && !validateAmount(customAmount) && (
                   <div className="error-message">
-                    Minimum donation amount is $1
+                    Please enter an amount between $1 and $10,000
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="form-section">
-              <label className="section-label">
-                <h2>Payment Method</h2>
-              </label>
-              <div className="payment-methods">
-                <label className="payment-option">
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    value="stripe"
-                    checked={paymentMethod === 'stripe'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    aria-label="Credit or Debit Card payment"
-                  />
-                  <div className="payment-content">
-                    <div className="payment-icon">💳</div>
-                    <div className="payment-info">
-                      <div className="payment-name">Credit/Debit Card</div>
-                      <div className="payment-desc">Secure payment via Stripe</div>
-                    </div>
-                  </div>
+            {showEmailInput && (
+              <div className="form-section">
+                <label className="section-label">
+                  <h2>Email for Receipt (Optional)</h2>
                 </label>
-
-                <label className="payment-option">
+                <div className="email-input-wrapper">
                   <input
-                    type="radio"
-                    name="payment-method"
-                    value="paypal"
-                    checked={paymentMethod === 'paypal'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    aria-label="PayPal payment"
+                    type="email"
+                    value={donorEmail}
+                    onChange={(e) => setDonorEmail(e.target.value)}
+                    placeholder="your.email@example.com"
+                    className="email-input"
+                    aria-label="Email address for donation receipt"
                   />
-                  <div className="payment-content">
-                    <div className="payment-icon">📊</div>
-                    <div className="payment-info">
-                      <div className="payment-name">PayPal</div>
-                      <div className="payment-desc">Pay with your PayPal account</div>
-                    </div>
-                  </div>
-                </label>
+                  <button
+                    type="button"
+                    onClick={handleEmailSubmit}
+                    disabled={!validateEmail(donorEmail)}
+                    className="email-submit-btn"
+                  >
+                    Continue
+                  </button>
+                </div>
+                <p className="email-note">
+                  Providing your email ensures you receive a receipt for your donation. 
+                  Your information is secure and will never be shared.
+                </p>
               </div>
-            </div>
+            )}
+
+            {!showEmailInput && (
+              <div className="form-section">
+                <br/>
+                <label className="section-label"><h2>Payment Method</h2></label>
+                <div className="payment-methods">
+                  <label className="payment-option">
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      value="stripe"
+                      checked={paymentMethod === 'stripe'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      aria-label="Credit or Debit Card payment"
+                    />
+                    <div className="payment-content">
+                      <div className="payment-icon">💳</div>
+                      <div className="payment-info">
+                        <div className="payment-name">Credit/Debit Card</div>
+                        <div className="payment-desc">Secure payment via Stripe</div>
+                      </div>
+                    </div>
+                  </label>
+
+                  <label className="payment-option">
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      value="paypal"
+                      checked={paymentMethod === 'paypal'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      aria-label="PayPal payment"
+                    />
+                    <div className="payment-content">
+                      <div className="payment-icon">📊</div>
+                      <div className="payment-info">
+                        <div className="payment-name">PayPal</div>
+                        <div className="payment-desc">Pay with your PayPal account</div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="error-banner">
+                {error}
+              </div>
+            )}
 
             <button
-              type="submit"
-              disabled={!donationAmount || isProcessing || parseFloat(donationAmount) < 1}
+              type="button"
+              onClick={showEmailInput ? handleEmailSubmit : handleDonateClick}
+              disabled={!donationAmount || isProcessing || !validateAmount(donationAmount) || (showEmailInput && !validateEmail(donorEmail))}
               className="donate-button"
-              aria-label={`Donate $${getDisplayAmount()}`}
+              aria-label={`Donate $${donationAmount || '0'}`}
             >
               {isProcessing ? (
                 <>
                   <div className="processing-spinner" aria-hidden="true"></div>
                   Processing...
                 </>
+              ) : showEmailInput ? (
+                'Continue to Payment'
               ) : (
-                `Donate $${getDisplayAmount()}`
+                `Donate $${donationAmount || '0'}`
               )}
             </button>
 
