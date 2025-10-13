@@ -9,6 +9,8 @@ import DonationPage from './pages/DonationPage'
 import ScubaPage from './pages/ScubaPage';
 import './App.css'
 import NotFound from './pages/NotFound'
+// Add this import
+import ProgrammingPage from './pages/ProgrammingPage';
 
 function App() {
   return (
@@ -20,9 +22,10 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/donate" element={<DonationPage />} />
- 
+ <Route path="/programming" element={<ProgrammingPage />} />
 <Route path="/scuba" element={<ScubaPage />} />
           <Route path="/*" element={<NotFound />} />
+
         </Routes>
       </main>
     </div>
