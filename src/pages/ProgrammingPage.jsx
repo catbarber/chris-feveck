@@ -28,14 +28,6 @@ function ProgrammingPage() {
 
   const projects = [
     {
-      title: "The Voyages of Victora Website",
-      description: "Interactive author website and book series portal built with React and Firebase",
-      technologies: ["React", "Firebase", "CSS3", "JavaScript"],
-      liveLink: "https://voyagesofvictora.web.app/",
-      githubLink: "#",
-      image: "🌊"
-    },
-    {
       title: "Portfolio Platform",
       description: "Responsive portfolio website showcasing writing and development work with modern design",
       technologies: ["React", "Vite", "CSS3", "Responsive Design"],
