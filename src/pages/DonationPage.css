@@ -26,11 +26,6 @@
   margin-bottom: 1rem;
   font-weight: 700;
   line-height: 1.2;
-text-shadow: 
-    -1px -1px 0 black,  /* Top-left shadow */
-    1px -1px 0 black,   /* Top-right shadow */
-    -1px 1px 0 black,   /* Bottom-left shadow */
-    1px 1px 0 black;    /* Bottom-right shadow */
 }
 
 .donation-subtitle {
