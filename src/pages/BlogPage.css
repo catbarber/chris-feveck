@@ -1,6 +1,6 @@
 /* src/pages/BlogPage.css */
 .blog-page {
-  background: linear-gradient(135deg, var(--spring-pastel) 0%, var(--spring-white) 100%);
+  background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
   font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
 }
