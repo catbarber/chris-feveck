@@ -59,6 +59,7 @@
   text-align: center;
   margin-bottom: 1.5rem;
   background: none;
+background-color:var(--spring-blossom);
   -webkit-text-fill-color: var(--spring-white);
   color: var(--spring-white);
   line-height: 1.2;
