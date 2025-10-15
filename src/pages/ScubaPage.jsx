@@ -45,6 +45,17 @@ function ScubaPage() {
     }
   ];
 
+  const youtubeVideo = {
+    url: "https://youtu.be/q0VHnPLlvzg?si=8YrBnVnGrpJOEBRy",
+    embedUrl: "https://www.youtube.com/embed/q0VHnPLlvzg",
+    title: "Underwater Adventure - Diving Experience",
+    description: "Watch my diving adventures and see the underwater world that inspires my writing."
+  };
+
+  const handleYouTubeClick = () => {
+    window.open(youtubeVideo.url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="scuba-page">
       {/* Hero Section */}
@@ -97,6 +108,38 @@ function ScubaPage() {
               <div className="image-placeholder">
                 <span>🌊</span>
                 <p>Underwater Exploration</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* YouTube Video Section */}
+      <section className="youtube-section">
+        <div className="scuba-container">
+          <div className="youtube-content">
+            <div className="youtube-text">
+              <h2>Dive Into the Experience</h2>
+              <p>{youtubeVideo.description}</p>
+              <button 
+                onClick={handleYouTubeClick}
+                className="youtube-button"
+                aria-label={`Watch ${youtubeVideo.title} on YouTube`}
+              >
+                <span className="youtube-icon">▶️</span>
+                Watch on YouTube
+              </button>
+            </div>
+            <div className="youtube-video">
+              <div className="video-container">
+                <iframe
+                  src={youtubeVideo.embedUrl}
+                  title={youtubeVideo.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
               </div>
             </div>
           </div>
